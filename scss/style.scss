@@ -1,0 +1,565 @@
+@font-face {
+    font-family: "BadScript";
+    src: url("../assets/fonts/Bad_Script/BadScript-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "IndieFlower";
+    src: url("../assets/fonts/Indie_Flower/IndieFlower-Regular.ttf") format("truetype");
+}
+
+html, body {
+    width: 100vw;
+    height: 100dvh;
+    min-height: 100dvh;
+    margin: 0;
+    
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "BadScript", cursive;
+    text-align: center;
+}
+
+#scene {
+    z-index: 1;
+}
+
+h1 {
+    font-size: xx-large;
+}
+
+p {
+    font-size: larger;
+}
+
+button {
+    padding: 12px 24px;
+
+    border: none;
+    border-radius: 20px;
+
+    font-family: "IndieFlower", cursive;
+    font-size: large;
+
+    background-color: #b29ccc;
+
+    cursor: pointer;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 17.5px;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.cake {
+    width: min(95vw, 500px);
+    height: auto;
+}
+
+.cake-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12rem;
+    margin-bottom: 7rem;
+}
+
+.candle {
+    position: absolute;
+    bottom: 94%;
+    transform: translateX(-50%);
+}
+
+.candle img {
+    width: 10px;
+}
+
+.candle .flame {
+    width: 25px;
+}
+
+.flame {
+    position: absolute;
+    top: -41px;
+    left: 45%;
+    transform: translateX(-50%);
+}
+
+.cake-shake {
+    animation: shake 0.75s;
+}
+
+.cake-wobble {
+    //animation: wobble 0.75s;
+    animation: wobble 2.5s;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    10% { transform: translateX(-10px); }
+    20% { transform: translateX(10px); }
+    30% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    50% { transform: translateX(-10px); }
+    60% { transform: translateX(10px); }
+    70% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+    90% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes wobble {
+    0%   { transform: rotate(0deg); }
+    25%  { transform: rotate(1deg); }
+    50%  { transform: rotate(-1deg); }
+    60%  { transform: rotate(2deg); }
+    65%  { transform: rotate(-2deg); }
+    70%  { transform: rotate(2deg); }
+    75%  { transform: rotate(-2deg);}
+    80%  { transform: rotate(3deg); }
+    82%  { transform: rotate(-3deg); }
+    84%  { transform: rotate(3deg); }
+    86%  { transform: rotate(-3deg); }
+    88%  { transform: rotate(3deg); }
+    90%  { transform: rotate(-4deg); }
+    91%  { transform: rotate(4deg); }
+    92%  { transform: rotate(-4deg); }
+    93%  { transform: rotate(4deg); }
+    94%  { transform: rotate(-4deg); }
+    95%  { transform: rotate(4deg); }
+    96%  { transform: rotate(-4deg); }
+    97%  { transform: rotate(4deg); }
+    98%  { transform: rotate(-4deg); }
+    99%  { transform: rotate(4deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.melted-cake {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    z-index: 57;
+
+    opacity: 0;
+    transform: scale(0);
+
+    transform-origin: center;
+}
+
+.melted-cake.show {
+    animation: splat 1s forwards;
+}
+
+.melted-cake.fall {
+    animation: drip 2.5s ease-in forwards;
+}
+
+@keyframes splat {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.25);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(0.95);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes drip {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    10% {
+        transform: scale(1) translateY(1vh);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) translateY(200vh);
+        opacity: 1;
+    }
+}
+
+// la busta
+@font-face {
+    font-family: "BadScript";
+    src: url("../assets/fonts/Bad_Script/BadScript-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "IndieFlower";
+    src: url("../assets/fonts/Indie_Flower/IndieFlower-Regular.ttf") format("truetype");
+}
+
+.envelope-container {
+    position: relative;
+    width: min(95vw, 400px);
+    min-height: 500px;
+    margin: 2rem auto 0;
+}
+
+.envelope-front {
+    position: absolute;
+    z-index: 4;
+
+    width: 100%;
+    height: auto;
+
+    left: 0%;
+    bottom: 0%;
+
+    transition: opacity 1s ease;
+}
+
+.envelope-flap {
+    position: absolute;
+    z-index: 5;
+    width: 112%;
+    left: 50%;
+    bottom: 12.75%;
+    transform: translateX(-50%) scaleY(1);
+    transform-origin: top center;
+}
+
+@keyframes close-flap {
+    0% {
+        transform: translateX(-50%) translateY(0) scaleY(1);
+    }
+    100% {
+        transform: translateX(-50%) translateY(20px) scaleY(0);
+    }
+}
+
+.envelope-flap.close-flap-anim {
+    animation: close-flap 0.75s forwards ease-in;
+}
+
+.envelope-back {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    left: 50%;
+    bottom: 22.5%;
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: center;
+    opacity: 0;
+    transition:
+        transform 0.75s ease-out,
+        opacity 0.75s ease-out;
+}
+
+.envelope-back.show {
+    transform: translateX(-50%) scaleY(1);
+    opacity: 1;
+}
+
+.envelope-back.fade-out {
+    opacity: 0 !important;
+}
+
+.envelope-front,
+.envelope-flap {
+    transition: opacity 1s ease;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+// la lettera: foglio + testo
+.letter {
+    position: absolute;
+    z-index: 2;
+    width: 122.5%;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateY(0%) scaleY(0.5075);
+    transform-origin: bottom center;
+}
+
+.letter.rise {
+    animation: letter-rise 1.5s ease-out forwards;
+}
+
+@keyframes letter-rise {
+    0% {
+        transform: translateX(-50%) translateY(0%) scaleY(0.5075);
+    }
+    100% {
+        transform: translateX(-50%) translateY(0%) scaleY(1.0375);
+    }
+}
+
+.envelope-paper {
+    display: block;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.letter-window {
+    position: absolute;
+    left: 0%;
+    top: 0;
+    bottom: 0;
+
+    overflow-y: auto;
+
+    margin-top: 1.375rem;
+    margin-bottom: 1.375rem;
+    margin-left: 3.75rem;
+    margin-right: 3.25rem;
+
+    z-index: 2;
+}
+
+.letter-text {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    opacity: 0;
+    font-family: "IndieFlower", cursive;
+}
+
+.letter-text p {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    text-align: left;
+}
+
+.signature {
+    margin-top: 2rem;
+    text-align: right;
+}
+
+.letter-text.show {
+    animation: show-letter-text 0.75s ease-out forwards;
+}
+
+@keyframes show-letter-text {
+    from {
+        opacity: 0;
+        transform: translateY(0px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.scroll-hint {
+    opacity: 0;
+    transition: opacity 0s;
+    align-items: center;
+}
+
+.scroll-hint.show {
+    opacity: 1;
+}
+
+// la ceralacca
+.seal-container {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    z-index: 6;
+    bottom: -7.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.seal-top {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, 15px);
+}
+
+.seal-bottom {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, -15.25px);
+}
+
+.seal-left {
+    position: absolute;
+    width: 60px;
+    height: auto;
+    left: 0;
+    top: 50%;
+    transform: translate(15px, -50%);
+}
+
+.seal-right {
+    position: absolute;
+    width: 60px;
+    height: auto;
+    right: 0;
+    top: 50%;
+    transform: translate(-15px, -50%);
+}
+
+.detach {
+    transition: transform 0.375s ease-out;
+}
+
+.detach-top {
+    transform: translate(-50%, -2.5px) scale(1.125);
+}
+
+.detach-bottom {
+    transform: translate(-50%, 2.5px) scale(1.125);
+}
+
+.detach-left {
+    transform: translate(-2.5px, -50%) scale(1.125);
+}
+
+.detach-right {
+    transform: translate(2.5px, -50%) scale(1.125);
+}
+
+.seal-top.fall,
+.seal-bottom.fall,
+.seal-left.fall,
+.seal-right.fall {
+    animation: sealDrip 0.875s ease-in forwards;
+}
+
+@keyframes sealDrip {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        translate: 0 130vh;
+        opacity: 0;
+    }
+}
+
+// --- sfondi ---
+#bokeh-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+#bokeh-container.active {
+    background-color: #f2e5ff;
+}
+
+.bokeh-dot {
+    position: absolute;
+    border-radius: 50%;
+
+    filter: blur(2px);
+
+    animation: bokehFloat 8s ease-in-out infinite alternate;
+}
+
+
+@keyframes bokehFloat {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-12px);
+    }
+}
+
+.bg-intro {
+    background: linear-gradient(
+        135deg,
+        #efbcf5,
+        #f8f1cf,
+        #b8d1f5
+    );
+}
+
+.bg-too-early {
+    background-color: #efe0fe;
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(45, 5, 57, 0.057) 25px,
+            transparent 25px
+        ),
+        linear-gradient(
+            0deg,
+            rgba(45, 5, 57, 0.057) 25px,
+            transparent 25px
+        );
+
+    background-size: 35px 35px;
+}
+
+// .bg-cake {
+//     background:
+//         radial-gradient(
+//             circle at 50% 35%,
+//             #ffd6e8 0%,
+//             #f8b6d8 25%,
+//             #f7a56d 50%,
+//             #c77acb 75%,
+//             #7b4a9e 100%
+//         );
+// }
+
+.bg-cake {
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            #ffdcfd 0%,
+            #f9cdab 55%,
+            #cca5e7 85%
+        );
+}
+
+.bg-envelope {
+    background:
+        radial-gradient(circle at 15% 30%, rgba(255,180,210,.35), transparent 25%),
+        radial-gradient(circle at 85% 20%, rgba(220,190,255,.35), transparent 25%),
+        radial-gradient(circle at 70% 75%, rgba(180,230,255,.35), transparent 30%),
+        radial-gradient(circle at 30% 80%, rgba(255,230,170,.35), transparent 25%),
+        #f8f3ff;
+
+}
