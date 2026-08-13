@@ -7,9 +7,18 @@
     <title>A little treat for you!</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- pre loading delle img -->
+    <link rel="preload" as="image" href="assets/images/air-view-snow-bg1.png">
+    <link rel="preload" as="image" href="assets/images/bg-snow-angel3.png">
+    <link rel="preload" as="image" href="assets/images/bunny-snow-angel1b.png">
+    <link rel="preload" as="image" href="assets/images/bunny-snow-angel2b.png">
+    <link rel="preload" as="image" href="assets/images/bunny-waving1b.png">
+    <link rel="preload" as="image" href="assets/images/bunny-waving2b.png">
+    <link rel="preload" as="image" href="assets/images/bunny-waving-hi-text1b.png">
+    <link rel="preload" as="image" href="assets/images/cloud-white1.png">
+    
     <!-- <link rel="preload" as="image" href="assets/images/cake-full2.png">
-    <link rel="preload" as="image" href="assets/images/cake-melted3.png"> -->
-    <!-- <link rel="preload" as="image" href="assets/images/envelope-back.png">
+    <link rel="preload" as="image" href="assets/images/cake-melted3.png">
+    <link rel="preload" as="image" href="assets/images/envelope-back.png">
     <link rel="preload" as="image" href="assets/images/envelope-flap.png">
     <link rel="preload" as="image" href="assets/images/envelope-front.png">
     <link rel="preload" as="image" href="assets/images/seal-bottom.png">
@@ -20,13 +29,14 @@
 
 <body>
     <main id="app">
-        <!-- <div id="bokeh-container"></div> -->
+        <div id="bokeh-container"></div>
         <section id="scene"></section>
     </main>
 
+    <script src="js/data.js"></script>
+    <script src="js/bokeh.js"></script>
     <script src="js/sceneManager.js"></script>
     <script src="js/scenes.js"></script>
-    <!-- <script src="js/bokeh.js"></script> -->
     <script src="js/app.js"></script>
 </body>
 
