@@ -529,6 +529,19 @@ p {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+    .scene-title {
+        position: absolute;
+        margin: 0 0 1.25rem 0;
+        z-index: 3;
+        align-items: center;
+        // color: #d4ddf9;
+        color: #78879a;
+        font-size: x-large;
+        top: 9.25%;
+        left: 50%;
+        transform: translate(-50%);
+    }
 
     .frame-and-mask-and-balloons-container {
         position: absolute;
@@ -568,22 +581,13 @@ p {
             transform: translate(-50%, -50%);
             overflow: hidden;
             z-index: 2;
-
-            .grid-point {
+            
+            .balloon {
                 position: absolute;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                background: red;
+                width: 17vw;
+                height: auto;
                 transform: translate(-50%, -50%);
             }
-        }
-
-        .balloon {
-            position: absolute;
-            width: 17vw;
-            height: auto;
-            transform: translate(-50%, -50%);
         }
     }
 }

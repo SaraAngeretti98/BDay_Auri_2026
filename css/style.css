@@ -408,6 +408,17 @@ p {
   justify-content: center;
   align-items: center;
 }
+.scene-balloons .scene-title {
+  position: absolute;
+  margin: 0 0 1.25rem 0;
+  z-index: 3;
+  align-items: center;
+  color: #78879a;
+  font-size: x-large;
+  top: 9.25%;
+  left: 50%;
+  transform: translate(-50%);
+}
 .scene-balloons .frame-and-mask-and-balloons-container {
   position: absolute;
   width: 100vw;
@@ -445,15 +456,7 @@ p {
   overflow: hidden;
   z-index: 2;
 }
-.scene-balloons .frame-and-mask-and-balloons-container .balloon-mask .grid-point {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: red;
-  transform: translate(-50%, -50%);
-}
-.scene-balloons .frame-and-mask-and-balloons-container .balloon {
+.scene-balloons .frame-and-mask-and-balloons-container .balloon-mask .balloon {
   position: absolute;
   width: 17vw;
   height: auto;

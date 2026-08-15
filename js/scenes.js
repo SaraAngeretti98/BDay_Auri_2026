@@ -22,8 +22,8 @@ function showIntroScene(scene) {
 // SCENA "TOO EARLY O BIRTHDAY?": TASTO GO ON E FIOCCHI DI NEVE
 // funzione di supporto per la verifica della data
 function getBirthdayStatus() {
-    // const now = new Date();
-    const now = testBirthdayDate;
+    const now = new Date();
+    // const now = testBirthdayDate;
     
     const californiaDate = new Intl.DateTimeFormat("en-US", {
         timeZone: birthdayTimezone,
@@ -344,23 +344,34 @@ function createBalloonGrid(mask) {
                 x += (gridWidth / (columns - 1)) / 2;
             }
             points.push({ x, y });
-            const randomIndex = Math.floor(Math.random() * balloonImages.length);
-            const balloon = createElement("img");
-            balloon.src = balloonImages[randomIndex];
-            balloon.classList.add("balloon");
-            balloon.style.left = `${x}%`;
-            balloon.style.top = `${y}%`;
-            mask.append(balloon);
         }
     }
     return points;
+}
+
+// funzione di supporto per la creazione dei palloncini
+function createBalloons(mask, points) {    
+    points.forEach((point, index) => {        
+        setTimeout(() => {
+            const randomIndex = Math.floor(
+                Math.random() * balloonImages.length
+            );
+            const balloon = createElement("img");
+            balloon.src = balloonImages[randomIndex];
+            balloon.classList.add("balloon");
+            balloon.style.left = `${point.x}%`;
+            balloon.style.top = `${point.y}%`;
+            mask.append(balloon);
+        }, 2500 + index * 1000);
+    });
 }
 
 function showBalloonsScene(scene) {
     scene.classList.add("scene-balloons");
     setBackground("bg-balloons");
     
-    // const title = createElement("h1", "Test");
+    const title = createElement("h1", "Pop the balloons!");
+    title.classList.add("scene-title");
     
     const frameMaskBalloonsContainer = createElement("div");
     frameMaskBalloonsContainer.classList.add("frame-and-mask-and-balloons-container");
@@ -377,23 +388,9 @@ function showBalloonsScene(scene) {
     
     frameMaskBalloonsContainer.append(frameBack, frameFront, balloonMask);
 
-    // const balloon1 = createElement("img");
-    // balloon1.src = "assets/images/balloon1.png";
-    // balloon1.classList.add("balloon");
-    
-    // const balloon2 = createElement("img");
-    // balloon2.src = "assets/images/balloon2.png";
-    // balloon2.classList.add("balloon");
-    
-    // const balloon3 = createElement("img");
-    // balloon3.src = "assets/images/balloon3.png";
-    // balloon3.classList.add("balloon");
-    
     const balloonGrid = createBalloonGrid(balloonMask);
 
-    // scene.append(balloon1, balloon2, balloon3);
-    scene.append(frameMaskBalloonsContainer);
-    // scene.append(title);
+    scene.append(frameMaskBalloonsContainer, title);
 }
 
 
