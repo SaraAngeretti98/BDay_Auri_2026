@@ -301,7 +301,7 @@ function showOnTimeScene(scene) {
     whiteCloud2.src = "assets/images/cloud-white1.png";
     whiteCloud2.classList.add("white-cloud2");
 
-    whiteCloudsContainer.append(whiteCloud1, whiteCloud2);
+    whiteCloudsContainer.append(title, whiteCloud1, whiteCloud2);
 
     const bunnyWaving1 = createElement("img");
     bunnyWaving1.src = "assets/images/bunny-waving1b.png";
@@ -328,7 +328,12 @@ function showOnTimeScene(scene) {
         bunnyWaving2.classList.toggle("is-hidden");
     }, 375);
     
-    scene.append(calendarsContainer, whiteCloudsContainer, title, bunnyWaving1, bunnyWaving2, bunnyWavingText, button);
+    const bunnyAndButtonContainer = createElement("div");
+    bunnyAndButtonContainer.classList.add("bunny-and-button-container");
+
+    bunnyAndButtonContainer.append(bunnyWaving1, bunnyWaving2, bunnyWavingText, button);
+
+    scene.append(calendarsContainer, whiteCloudsContainer, bunnyAndButtonContainer);
 }
 
 // SCENA "BALLOONS": CORNICE, MASCHERA, TORTA

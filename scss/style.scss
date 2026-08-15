@@ -347,21 +347,11 @@ p {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    .scene-title {
-        position: relative;
-        bottom: 8.25rem;
-        margin: 0 0 0.5rem 0;
-        font-size: larger;
-        // color: #d4ddf9;
-        color: #78879a;
-        z-index: 3;
-    }
-
-    .white-clouds-container {
+    
+    .white-clouds-container {        
         position: absolute;
         width: 100vw;
-        top: 10.75rem;
+        top: 13.75rem;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
@@ -369,6 +359,16 @@ p {
         align-items: center;
         justify-content: center;
         z-index: 1;
+        
+        .scene-title {
+            position: absolute;
+            bottom: 3.5rem;
+            margin: 0 0 0.5rem 0;
+            font-size: larger;
+            // color: #d4ddf9;
+            color: #78879a;
+            z-index: 3;
+        }
         
         .white-cloud1 {
             width: 45%;
@@ -385,7 +385,7 @@ p {
     // calendari
     .calendars-container {
         position: absolute;
-        top: 1rem;
+        top: 4.25rem;
         left: 0;
         display: flex;
         flex-direction: row;
@@ -405,14 +405,13 @@ p {
             font-weight: 600;
             letter-spacing: 0.12em;
             margin-bottom: 0.25rem;
-            color: #d4ddf9;
-            // color: #485884;
+            color: #485884;
             z-index: 5;
             font-family: "IndieFlower", cursive;
         }
 
         .calendar {
-            width: 100px;
+            width: 90px;
             z-index: 1;
         }
 
@@ -460,7 +459,7 @@ p {
 
         .calendar-paper {
             min-height: 75px;
-            height: 100px;
+            height: 90px;
             aspect-ratio: 1 / 1;
             padding: 0.75rem 0.5rem;
             background: #fefbf5;
@@ -493,46 +492,55 @@ p {
 
         .calendar-day {
             margin-top: 0rem;
-            font-size: 2rem;
-            font-weight: 600;
+            font-size: 1.75rem;
+            font-weight: 550;
             color: #485884;
             line-height: 1;
         }
     }
 
-    // i coniglietti
-    .waving-bunny-one {
+    .bunny-and-button-container {
         position: absolute;
-        width: 30vw;
-        left: 47.5%;
-        bottom: 27.25%;
-        transform: translateX(-50%);
-    }
-
-    .waving-bunny-two {
-        position: absolute;
-        width: 32vw;
-        left: 44.5%;
-        bottom: 27.25%;
-        transform: translateX(-50%);
-    }
-
-    .waving-bunny-text {
-        position: absolute;
-        width: 27.5vw;
-        left: 71.25%;
-        bottom: 37.75%;
-        transform: translateX(-50%);
-    }
-    
-    .primary-button {
-        position: absolute;
-        margin: 0;
+        width: 100vw;
         left: 50%;
+        bottom: 16.25%;
         transform: translateX(-50%);
-        bottom: 9.875rem;
-        z-index: 2;
-        font-size: larger;
+
+        // i coniglietti
+        .waving-bunny-one {
+            position: absolute;
+            width: 30vw;
+            left: 47.5%;
+            bottom: 6.25vh;
+            transform: translateX(-50%);
+        }
+
+        .waving-bunny-two {
+            position: absolute;
+            width: 32vw;
+            left: 44.5%;
+            bottom: 6.25vh;
+            transform: translateX(-50%);
+        }
+
+        .waving-bunny-text {
+            position: absolute;
+            width: 42.5vw;
+            left: 76.25%;
+            bottom: 17vh;
+            transform: translateX(-50%);
+        }
+        
+        .primary-button {
+            position: absolute;
+            width: max-content;
+            margin: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0%;
+            z-index: 2;
+            font-size: larger;
+        }
     }
 }
 
