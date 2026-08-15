@@ -158,16 +158,27 @@ p {
 
 // TOO EARLY SCENE
 .scene-too-early {
+    .snow-angel-bg {
+        position: absolute;
+        width: auto;
+        height: 120vh;
+        bottom: 0%;
+        left: 50%;
+        transform: translate(-50%, 13.75%);
+        z-index: 0;
+    }
+
     // testi per too early scene
     .texts-container {
         position: absolute;
-        top: 11.75rem;
+        top: 14.25rem;
         left: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
         text-align: center;
+        z-index: 1;
 
         .countdown-text {
             margin: 0 0 1.25rem 0;
@@ -177,25 +188,26 @@ p {
         }
         
         .scene-title {
-            margin: 0 0 0.5rem 0;
+            margin: 0.25rem 0 0.5rem 0;
             font-size: x-large;
         }
         
         .scene-message {
-            margin: 0.5rem 0 0 0;
+            margin: 0.25rem 0 0.25rem 0;
             font-size: medium;
         }
-    }
-
-    .primary-button {
-        margin: 0;
-        bottom: 1.25rem;
+        
+            .primary-button {
+                margin: 0;
+                top: 1.25rem;
+                z-index: 1;
+            }
     }
 
     // calendari
     .calendars-container {
         position: absolute;
-        top: 1rem;
+        top: 4.25rem;
         left: 0;
         display: flex;
         flex-direction: row;
@@ -203,6 +215,7 @@ p {
         align-items: flex-start;
         width: 100%;
         gap: 0.5rem;
+        z-index: 1;
 
         .calendar-wrapper {
             flex: 0 0 auto;
@@ -219,7 +232,7 @@ p {
         }
 
         .calendar {
-            width: 100px;
+            width: 90px;
             z-index: 1;
         }
 
@@ -267,7 +280,7 @@ p {
 
         .calendar-paper {
             min-height: 75px;
-            height: 100px;
+            height: 90px;
             aspect-ratio: 1 / 1;
             padding: 0.75rem 0.5rem;
             background: #fefbf5;
@@ -300,8 +313,8 @@ p {
 
         .calendar-day {
             margin-top: 0rem;
-            font-size: 2rem;
-            font-weight: 600;
+            font-size: 1.75rem;
+            font-weight: 550;
             color: #485884;
             line-height: 1;
         }
@@ -315,6 +328,7 @@ p {
         left: 50%;
         bottom: 15%;
         transform: translateX(-50%);
+        z-index: 1;
     }
 
     .snow-angel-bunny-two {
@@ -323,6 +337,7 @@ p {
         left: 50%;
         bottom: 15%;
         transform: translateX(-50%);
+        z-index: 1;
     }
 }
 
@@ -607,10 +622,11 @@ p {
 }
 
 .bg-too-early {
-    background-image: url("../assets/images/bg-snow-angel3.png");
-    background-size: 177% auto;
-    background-position: 50% 15%;
-    background-repeat: no-repeat;
+    // background-image: url("../assets/images/bg-snow-angel3.png");
+    // background-size: 177% auto;
+    // background-position: 50% 15%;
+    // background-repeat: no-repeat;
+    background-color: #ffffff;
 }
 
 .bg-on-time {

@@ -22,8 +22,8 @@ function showIntroScene(scene) {
 // SCENA "TOO EARLY O BIRTHDAY?": TASTO GO ON E FIOCCHI DI NEVE
 // funzione di supporto per la verifica della data
 function getBirthdayStatus() {
-    const now = new Date();
-    // const now = testBirthdayDate;
+    // const now = new Date();
+    const now = testBirthdayDate;
     
     const californiaDate = new Intl.DateTimeFormat("en-US", {
         timeZone: birthdayTimezone,
@@ -215,6 +215,10 @@ function showTooEarlyScene(scene) {
     const title = createElement("h1", "You're here too early! 🥺");
     title.classList.add("scene-title");
 
+    const bgSnowAngel = createElement("img");
+    bgSnowAngel.src = "assets/images/bg-snow-angel3.png";
+    bgSnowAngel.classList.add("snow-angel-bg");
+
     const bunnySnowAngel1 = createElement("img");
     bunnySnowAngel1.src = "assets/images/bunny-snow-angel1b.png";
     bunnySnowAngel1.classList.add("snow-angel-bunny-one");
@@ -238,7 +242,7 @@ function showTooEarlyScene(scene) {
     const button = createElement("button", "Go on!");
     button.classList.add("primary-button");
 
-    textsContainer.append(countdownText, title, message);
+    textsContainer.append(countdownText, title, message, button);
 
     const calendarsContainer = createElement("div");
     calendarsContainer.classList.add("calendars-container");
@@ -248,7 +252,7 @@ function showTooEarlyScene(scene) {
 
     calendarsContainer.append(myCalendar, aaronCalendar);
 
-    scene.append(calendarsContainer, textsContainer, button, bunnySnowAngel1, bunnySnowAngel2);
+    scene.append(calendarsContainer, textsContainer, bgSnowAngel, bunnySnowAngel1, bunnySnowAngel2);
 
     // contatore click + logica click
     let clickCount = 0;
