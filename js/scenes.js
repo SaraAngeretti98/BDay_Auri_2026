@@ -308,14 +308,14 @@ function showOnTimeScene(scene) {
     bunnyWaving2.classList.add("waving-bunny-two", "is-hidden");
 
     const bunnyWavingText = createElement("img");
-    bunnyWavingText.src = "assets/images/bunny-waving-hi-text1b.png";
+    bunnyWavingText.src = "assets/images/bunny-waving-hi-text1c.png";
     bunnyWavingText.classList.add("waving-bunny-text");
-
+    
     const button = createElement("button", "Let's go!");
     button.classList.add("primary-button");
-
+    
     button.addEventListener("click", () => {
-        changeScene(showNextScene);
+        changeScene(showBalloonsScene);
     });
     
     // animazione bunny
@@ -327,8 +327,71 @@ function showOnTimeScene(scene) {
     scene.append(calendarsContainer, whiteCloudsContainer, title, bunnyWaving1, bunnyWaving2, bunnyWavingText, button);
 }
 
-function showNextScene(scene) {
+// SCENA "BALLOONS": CORNICE, MASCHERA, TORTA
+// funzione di supporto per la creazione della maschera per i palloncini
+function createBalloonGrid(mask) {
+    const columns = 6;
+    const rows = 9;
+    const points = [];
+    const gridWidth = 100;
+    const gridHeight = 100;
+    for (let row = 0; row < rows; row++) {
+        const isOffsetRow = row % 2 !== 0;
+        for (let column = 0; column < columns; column++) {
+            let x = (column / (columns - 1)) * gridWidth;
+            const y = (row / (rows - 1)) * gridHeight;
+            if (isOffsetRow) {
+                x += (gridWidth / (columns - 1)) / 2;
+            }
+            points.push({ x, y });
+            const point = createElement("div");
+            point.classList.add("grid-point");
+            point.style.left = `${x}%`;
+            point.style.top = `${y}%`;
+            mask.append(point);
+        }
+    }
+    return points;
+}
 
+function showBalloonsScene(scene) {
+    scene.classList.add("scene-balloons");
+    setBackground("bg-balloons");
+    
+    // const title = createElement("h1", "Test");
+    
+    const frameMaskBalloonsContainer = createElement("div");
+    frameMaskBalloonsContainer.classList.add("frame-and-mask-and-balloons-container");
+
+    const balloonMask = createElement("div");
+    balloonMask.classList.add("balloon-mask");
+    
+    const frameBack = createElement("div");
+    frameBack.classList.add("frame-back");
+    
+    const frameFront = createElement("img");
+    frameFront.src = "assets/images/frame1c.png";
+    frameFront.classList.add("frame-front");
+    
+    frameMaskBalloonsContainer.append(frameBack, frameFront, balloonMask);
+
+    // const balloon1 = createElement("img");
+    // balloon1.src = "assets/images/balloon1.png";
+    // balloon1.classList.add("balloon");
+    
+    // const balloon2 = createElement("img");
+    // balloon2.src = "assets/images/balloon2.png";
+    // balloon2.classList.add("balloon");
+    
+    // const balloon3 = createElement("img");
+    // balloon3.src = "assets/images/balloon3.png";
+    // balloon3.classList.add("balloon");
+    
+    const balloonGrid = createBalloonGrid(balloonMask);
+
+    // scene.append(balloon1, balloon2, balloon3);
+    scene.append(frameMaskBalloonsContainer);
+    // scene.append(title);
 }
 
 
@@ -341,7 +404,8 @@ function setBackground(background) {
         "bg-intro",
         "bg-go-on",
         "bg-too-early",
-        "bg-bday-unlocked",
+        "bg-on-time",
+        "bg-balloons",
         "bg-cake",
         "bg-envelope"
     );

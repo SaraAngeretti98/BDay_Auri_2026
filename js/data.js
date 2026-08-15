@@ -20,3 +20,10 @@ const earlyMessages = [
     "Why are you still here??",
     "It's still too early."
 ];
+
+// scena "balloons"
+const balloonImages = [
+    "assets/images/balloon1.png",
+    "assets/images/balloon2.png",
+    "assets/images/balloon3.png"
+];
