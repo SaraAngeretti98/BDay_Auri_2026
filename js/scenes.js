@@ -344,11 +344,13 @@ function createBalloonGrid(mask) {
                 x += (gridWidth / (columns - 1)) / 2;
             }
             points.push({ x, y });
-            const point = createElement("div");
-            point.classList.add("grid-point");
-            point.style.left = `${x}%`;
-            point.style.top = `${y}%`;
-            mask.append(point);
+            const randomIndex = Math.floor(Math.random() * balloonImages.length);
+            const balloon = createElement("img");
+            balloon.src = balloonImages[randomIndex];
+            balloon.classList.add("balloon");
+            balloon.style.left = `${x}%`;
+            balloon.style.top = `${y}%`;
+            mask.append(balloon);
         }
     }
     return points;
