@@ -85,6 +85,12 @@ p {
     visibility: hidden;
 }
 
+.is-hidden-with-fade {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.875s ease, visibility 0.875s ease;
+}
+
 // INTRO SCENE
 .scene-intro {
     display: flex;
@@ -95,16 +101,20 @@ p {
     .scene-title {
         position: relative;
         margin: 0 0 1.25rem 0;
+        z-index: 3;
     }
 
     .scene-message {
         width: 60%;
         position: relative;
         margin: 0 0 1.25rem 0;
+        z-index: 2;
     }
+
     .primary-button {
         position: relative;
         margin: 1.25rem 0 0 0;
+        z-index: 5;
     }
 }
 
@@ -153,6 +163,37 @@ p {
         color: #f5f9ff;
         opacity: 0.75;
         filter: blur(0.5px);
+    }
+    
+
+    .snow-frame-container {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        
+        .snow-frame-top, .snow-frame-bottom {
+            position: absolute;
+            width: 150%;
+            height: auto;
+            left: 50%;
+            transform: translateX(-50%);
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            color: #d8eafa;
+        }
+        
+        .snow-frame-top {
+            top: 0%;
+        }
+
+        .snow-frame-bottom {
+            bottom: 0%;
+        }
     }
 }
 
@@ -371,14 +412,14 @@ p {
         }
         
         .white-cloud1 {
-            width: 45%;
+            width: 47.5%;
             transform: scaleX(-1);
-            margin-right: -12vw;
+            margin-right: -11vw;
         }
         
         .white-cloud2 {
-            width: 45%;
-            margin-left: -12vw;
+            width: 47.5%;
+            margin-left: -11vw;
         }
     }
 
@@ -556,7 +597,7 @@ p {
     .scene-title {
         position: absolute;
         margin: 0 0 1.25rem 0;
-        z-index: 3;
+        z-index: 2;
         align-items: center;
         // color: #d4ddf9;
         color: #78879a;
@@ -573,6 +614,7 @@ p {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        z-index: 1;
         
         .frame-back {
             position: absolute;
@@ -582,9 +624,81 @@ p {
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: #f6f9ff;
-            z-index: 0;
+            z-index: 1;
+            
+            &.cake-bg-zoom {
+                animation: cakeBgZoom 0.875s ease-in forwards;
+            }
         }
+
+        .cake-balloon-scene {
+            position: absolute;
+            width: 12.5vw;
+            aspect-ratio: 1 / 0.823;
+            top: 62.5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+
+            &.cake-zoom {
+                animation: cakeZoom 0.875s ease-in forwards;
+            }
+        }
+
+        @keyframes cakeBgZoom {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+            }
         
+            to {
+                transform: translate(-50%, -50%) scale(1.83);
+            }
+        }
+
+        @keyframes cakeZoom {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        
+            to {
+                transform: translate(-50%, -50%) scale(8);
+            }
+        }
+
+        .snowglobe-balloon-scene {
+            position: absolute;
+            width: 12.5vw;
+            aspect-ratio: 0.837 / 1;
+            top: 62.5%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+
+            &.snowglobe-zoom {
+                animation: snowglobeZoom 0.875s ease-in forwards;
+            }
+        }
+
+        @keyframes snowglobeBgZoom {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        
+            to {
+                transform: translate(-50%, -50%) scale(1.83);
+            }
+        }
+
+        @keyframes snowglobeZoom {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        
+            to {
+                transform: translate(-50%, -50%) scale(8);
+            }
+        }
+
         .frame-front {
             position: absolute;
             width: 100%;
@@ -592,7 +706,7 @@ p {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 1;
+            z-index: 3;
         }
         
         .balloon-mask {
@@ -603,13 +717,482 @@ p {
             left: 50%;
             transform: translate(-50%, -50%);
             overflow: hidden;
-            z-index: 2;
+            z-index: 4;
             
             .balloon {
                 position: absolute;
-                width: 17vw;
+                width: 20vw;
                 height: auto;
                 transform: translate(-50%, -50%);
+                transition: opacity 1s ease;
+            }
+
+            .balloon-fade-out {
+                opacity: 0;
+            }
+        }
+    }
+}
+
+// CAKE SCENE
+.scene-cake {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    .scene-title {
+        position: absolute;
+        width: 100vw;
+        top: -10vh;
+        left: 50%;
+        margin: 0 0 1.25rem 0;
+        color: #78879a;
+        font-size: larger;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+    }
+    
+    .scene-message {
+        position: absolute;
+        width: 100vw;
+        top: -7.5vh;
+        left: 50%;
+        margin: 1.25rem 0 0 0;
+        color: #485884;
+        font-size: medium;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+    }
+
+    .fake-cake-bg {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+
+    .cake-and-candles-container {
+        position: absolute;
+        width: 100vw;
+        aspect-ratio: 1 / 1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        
+        .cake-cake-scene {
+            position: absolute;
+            width: 100%;
+            aspect-ratio: 1 / 0.823;
+            top: 66.25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .single-candle-container {
+            position: absolute;
+            width: 2vw;
+            height: auto;
+            top: 9.25%;
+            transform: translateX(-50%);
+            
+            .candle {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+            
+            .flame {
+                position: absolute;
+                width: auto;
+                height: 25%;
+                top: -20%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    }
+
+    .snowglobe-cake-scene-container {
+        position: absolute;
+        width: 100vw;
+        aspect-ratio: 0.837 / 1;
+        top: 50%;
+        top: 62.5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+
+        .snowglobe-cake-scene,
+        .snowglobe-cake-scene-glass,
+        .snowglobe-cake-scene-base {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            left: 0;
+        }
+
+        .snowglobe-cake-scene {
+            z-index: 1;
+        }
+        
+        .snowglobe-cake-scene-glass {
+            z-index: 2;
+        }
+        
+        .snowglobe-cake-scene-base {
+            width: 84.6%;
+            bottom: 0%;
+            left: 7.7%;  
+            z-index: 3;
+        }
+    }
+
+    .exploding-cake-container {
+        position: absolute;
+        width: 102.5vw;
+        height: 102.5vh;
+        top: 49.5%;
+        left: 49.5%;
+        transform: translate(-50%, -50%);
+        z-index: 7;
+
+        .snow1-cake-scene,
+        .snow2-cake-scene,
+        .snow3-cake-scene,
+        .snow4-cake-scene,
+        .snow5-cake-scene,
+        .snow6-cake-scene {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            left: 0;
+        }
+        
+        .snow1-cake-scene {
+            top: 0;
+            z-index: 6;
+        }
+
+        .snow2-cake-scene {
+            top: 13%;
+            z-index: 5;
+        }
+        
+        .snow3-cake-scene {
+            top: 35%;
+            z-index: 4;
+        }
+        
+        .snow4-cake-scene {
+            bottom: 0.5%;
+            z-index: 3;
+        }
+        
+        .snow5-cake-scene {
+            bottom: 0.25%;
+            z-index: 2;
+        }
+        
+        .snow6-cake-scene {
+            bottom: 0%;
+            z-index: 1;
+        }
+
+        &.exploding-cake-zoom {
+            animation: snowAppearAllZoom 0.625s ease-in forwards;
+        }
+        
+        &.snow-disappear-one-by-one {
+            .snow1-cake-scene {
+                animation: snowDisappearOneByOneZoom 0.75s ease-in 0s forwards;
+            }
+        
+            .snow2-cake-scene {
+                animation: snowDisappearOneByOneZoom 0.75s ease-in 0.5s forwards;
+            }
+        
+            .snow3-cake-scene {
+                animation: snowDisappearOneByOneZoom 0.75s ease-in 1s forwards;
+            }
+        
+            .snow4-cake-scene {
+                animation: snowDisappearOneByOneZoom 0.75s ease-in 1.5s forwards;
+            }
+        
+            .snow5-cake-scene {
+                animation: snowDisappearOneByOneZoom 0.75s ease-in 2s forwards;
+            }
+        
+            .snow6-cake-scene {
+                animation: snowDisappearOneByOneZoom 0.75s ease-in 2.5s forwards;
+            }
+        }
+        
+        @keyframes snowAppearAllZoom {
+            from {
+                transform: translate(-50%, -50%) scale(0.125);
+                opacity: 0;
+            }
+            
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+    
+        @keyframes snowDisappearOneByOneZoom {
+            from {
+                transform: translateY(0%);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(125vh);
+                opacity: 0;
+            }
+        }
+    }
+    
+    .cake-wobble {
+        //animation: wobble 0.75s;
+        animation: wobble 2.5s;
+    }
+    
+    @keyframes wobble {
+        0%   { transform: translate(-50%, -50%) rotate(0deg); }
+        25%  { transform: translate(-50%, -50%) rotate(0.5deg); }
+        50%  { transform: translate(-50%, -50%) rotate(-0.5deg); }
+        60%  { transform: translate(-50%, -50%) rotate(1deg); }
+        65%  { transform: translate(-50%, -50%) rotate(-1deg); }
+        70%  { transform: translate(-50%, -50%) rotate(1deg); }
+        75%  { transform: translate(-50%, -50%) rotate(-1deg);}
+        80%  { transform: translate(-50%, -50%) rotate(1.5deg); }
+        82%  { transform: translate(-50%, -50%) rotate(-1.5deg); }
+        84%  { transform: translate(-50%, -50%) rotate(1.5deg); }
+        86%  { transform: translate(-50%, -50%) rotate(-1.5deg); }
+        88%  { transform: translate(-50%, -50%) rotate(1.5deg); }
+        90%  { transform: translate(-50%, -50%) rotate(-2deg); }
+        92%  { transform: translate(-50%, -50%) rotate(2deg); }
+        94%  { transform: translate(-50%, -50%) rotate(-2deg); }
+        95%  { transform: translate(-50%, -50%) rotate(2deg); }
+        96%  { transform: translate(-50%, -50%) rotate(-2deg); }
+        97%  { transform: translate(-50%, -50%) rotate(2deg); }
+        98%  { transform: translate(-50%, -50%) rotate(-2deg); }
+        99%  { transform: translate(-50%, -50%) rotate(2deg); }
+        100% { transform: translate(-50%, -50%) rotate(0deg); }
+    }
+    
+}
+
+// SNOWGLOBE SCENE
+.scene-snowglobe {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    .scene-title {
+        position: absolute;
+        width: 100vw;
+        top: -10vh;
+        left: 50%;
+        margin: 0 0 1.25rem 0;
+        color: #78879a;
+        font-size: larger;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+    }
+    
+    .scene-message {
+        position: absolute;
+        width: 100vw;
+        top: -7.5vh;
+        left: 50%;
+        margin: 1.25rem 0 0 0;
+        color: #485884;
+        font-size: medium;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+    }
+
+    .fake-snowglobe-bg {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+
+        .fake-cake-bg.snowglobe-dark-bg {
+            --bg-color-1: #7898c4;
+            --bg-color-2: #314d7a;
+        }
+    }
+
+    .snowglobe-snowglobe-scene-container {
+        position: absolute;
+        width: 100vw;
+        aspect-ratio: 0.837 / 1;
+        top: 62.5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+
+        .snowglobe-snowglobe-scene,
+        .snowglobe-snowglobe-scene-base,
+        .snowglobe-snowglobe-scene-glass,
+        .snowglobe-snowglobe-scene-no-glass,
+        .snowglobe-snowglobe-scene-glass-cracked1,
+        .snowglobe-snowglobe-scene-glass-cracked2,
+        .snowglobe-snowglobe-scene-glass-broken-full,
+        .snowglobe-snowglobe-scene-glass-broken-left,
+        .snowglobe-snowglobe-scene-glass-broken-right {
+            position: absolute;
+            width: 100%;
+            height: auto;
+            left: 0;
+        }
+
+        .snowglobe-snowglobe-scene {
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .snowglobe-snowglobe-scene-base {
+            width: 84.6%;
+            bottom: 0%;
+            left: 7.7%;  
+            z-index: 7;
+        }
+        
+        .snowglobe-snowglobe-scene-glass {
+            z-index: 2;
+        }
+        
+        
+        .snowglobe-snowglobe-scene-no-glass {
+            width: 87.5%;
+            left: 7.875%;
+            bottom: 0%;
+            z-index: 1;
+        }
+        
+        .snowglobe-snowglobe-scene-glass-cracked1 {
+            z-index: 4;
+        }
+        
+        .snowglobe-snowglobe-scene-glass-cracked2 {
+            z-index: 4;
+        }
+        
+        .snowglobe-snowglobe-scene-glass-broken-full {
+            opacity: 0.5;
+            z-index: 5;
+        }
+        
+        .snowglobe-snowglobe-scene-glass-broken-left {
+            width: 40%;
+            left: 23%;
+            bottom: -32.5%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            opacity: 0.35;
+            z-index: 8;
+        }
+        
+        .snowglobe-snowglobe-scene-glass-broken-right {
+            width: 32.5%;
+            left: 78.5%;
+            bottom: -37.5%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            opacity: 0.35;
+            z-index: 8;
+        }
+    }
+
+    .snowglobe-wobble {
+        animation: wobble 0.375s;
+    }
+
+    @keyframes wobble {
+        0%   { transform: translate(-50%, -50%) rotate(0deg); }
+        25%  { transform: translate(-50%, -50%) rotate(0.5deg); }
+        50%  { transform: translate(-50%, -50%) rotate(-0.5deg); }
+        60%  { transform: translate(-50%, -50%) rotate(1deg); }
+        65%  { transform: translate(-50%, -50%) rotate(-1deg); }
+        70%  { transform: translate(-50%, -50%) rotate(1deg); }
+        75%  { transform: translate(-50%, -50%) rotate(-1deg);}
+        80%  { transform: translate(-50%, -50%) rotate(1.5deg); }
+        82%  { transform: translate(-50%, -50%) rotate(-1.5deg); }
+        84%  { transform: translate(-50%, -50%) rotate(1.5deg); }
+        86%  { transform: translate(-50%, -50%) rotate(-1.5deg); }
+        88%  { transform: translate(-50%, -50%) rotate(1.5deg); }
+        90%  { transform: translate(-50%, -50%) rotate(-2deg); }
+        92%  { transform: translate(-50%, -50%) rotate(2deg); }
+        94%  { transform: translate(-50%, -50%) rotate(-2deg); }
+        95%  { transform: translate(-50%, -50%) rotate(2deg); }
+        96%  { transform: translate(-50%, -50%) rotate(-2deg); }
+        97%  { transform: translate(-50%, -50%) rotate(2deg); }
+        98%  { transform: translate(-50%, -50%) rotate(-2deg); }
+        99%  { transform: translate(-50%, -50%) rotate(2deg); }
+        100% { transform: translate(-50%, -50%) rotate(0deg); }
+    }
+
+    .snowglobe-mask {
+        position: absolute;
+        width: 99vw;
+        aspect-ratio: 1 / 1.0125;
+        top: 1%;
+        left: 0.5%;
+        opacity: 0.5;
+        border-radius: 50%;
+        overflow: hidden;
+
+        .snowflake {
+            position: absolute;
+            height: auto;
+            
+            &.is-shaking {
+                animation: snowflake-shake var(--duration) ease-in-out;
+            }
+
+            &.snowflake-white {
+                filter:
+                grayscale(1) brightness(0) invert(1) drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+            }
+
+            &.snowflake-whiter {
+                filter:
+                    grayscale(1) brightness(0) invert(1);
+            }
+        }
+
+        @keyframes snowflake-shake {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+        
+            45% {
+                transform: translateY(calc(var(--rise) * -1))
+                           rotate(var(--rotation));
+            }
+        
+            55% {
+                transform: translateY(calc(var(--rise) * -1))
+                           rotate(calc(var(--rotation) * 1.15));
+            }
+        
+            100% {
+                transform: translateY(0) rotate(calc(var(--rotation) * 2));
             }
         }
     }
@@ -663,6 +1246,61 @@ p {
         );
 
     background-size: 70px 77.5px;
+}
+
+.bg-cake {
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            #d3e9ff 0%,
+            #d0e6ff 50%,
+            #fff6dd 88%,
+            #ffffff 100%
+        );
+    // background:
+    //     radial-gradient(
+    //         circle at 50% 50%,
+    //         #dfe6ff 0%,
+    //         #dfedff 50%,
+    //         #fff9e9 88%,
+    //         #ffffff 100%
+    //     );
+}
+
+.bg-snowglobe {
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            #d3e9ff 0%,
+            #d0e6ff 50%,
+            #fff6dd 88%,
+            #ffffff 100%
+        );
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+
+        background:
+            radial-gradient(
+                circle at 50% 50%,
+                #5576a8 30%,
+                #e0ecff 100%
+                );
+                // #314d7a 0%,
+
+        opacity: 0;
+        transition: opacity 30s ease;
+    }
+
+    &.bg-snowglobe-dark::after {
+        opacity: 1;
+    }
+}
+
+.bg-empty {
+    background: #ffffff;
 }
 
 // il bokeh

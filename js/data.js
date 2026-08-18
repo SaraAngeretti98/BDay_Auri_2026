@@ -6,7 +6,7 @@ const birthdayDay = 6;
 const birthdayTimezone = "America/Los_Angeles";
 
 // data fittizia per test
-const testBirthdayDate = new Date(2026, 8, 10);
+const testBirthdayDate = new Date(2026, 8, 6, 9, 0, 1);
 
 // scena "too early"
 const earlyMessages = [
@@ -26,4 +26,10 @@ const balloonImages = [
     "assets/images/balloon1.png",
     "assets/images/balloon2.png",
     "assets/images/balloon3.png"
+];
+
+// scena "snowglobe"
+const snowflakeImages = [
+    "assets/images/snowflake1.png",
+    "assets/images/snowflake2.png"
 ];

@@ -148,15 +148,31 @@ function showGoOnScene(scene) {
     button.classList.add("primary-button");
     
     button.addEventListener("click", () => {
-        const birthdayStatus = getBirthdayStatus();
-        if (birthdayStatus === "birthday" || birthdayStatus === "after") {
-            changeScene(showOnTimeScene);
-        } else {
-            changeScene(showTooEarlyScene);
-        }
+        // const birthdayStatus = getBirthdayStatus();
+        // if (birthdayStatus === "birthday" || birthdayStatus === "after") {
+        //     changeScene(showOnTimeScene);
+        // } else {
+        //     changeScene(showTooEarlyScene);
+        // }
+        
+        // testing
+        changeScene(showSnowglobeScene);
     });
     
-    scene.append(snowContainer, button);
+    const snowFrameContainer = createElement("div");
+    snowFrameContainer.classList.add("snow-frame-container");
+
+    const snowFrameTop = createElement("img");
+    snowFrameTop.src = "assets/images/snow-frame-top.png";
+    snowFrameTop.classList.add("snow-frame-top");
+
+    const snowFrameBottom = createElement("img");
+    snowFrameBottom.src = "assets/images/snow-frame-bottom.png";
+    snowFrameBottom.classList.add("snow-frame-bottom");
+
+    snowFrameContainer.append(snowFrameTop, snowFrameBottom);
+    
+    scene.append(snowContainer, button, snowFrameContainer);
 }
 
 // funzione di supporto per creazione calendari per scena "Too Early"
@@ -359,19 +375,35 @@ function createBalloonGrid(mask) {
 }
 
 // funzione di supporto per la creazione dei palloncini
-function createBalloons(mask, points) {    
-    points.forEach((point, index) => {        
+function createBalloons(mask, points, onComplete) {
+    let poppedBalloons = 0;
+    const activeBalloons = new Set();
+    const shuffledPoints = [...points];
+    shuffledPoints.sort(() => Math.random() - 0.5);
+    shuffledPoints.forEach((point, index) => {
         setTimeout(() => {
-            const randomIndex = Math.floor(
-                Math.random() * balloonImages.length
-            );
+            const randomIndex = Math.floor(Math.random() * balloonImages.length);
             const balloon = createElement("img");
             balloon.src = balloonImages[randomIndex];
             balloon.classList.add("balloon");
             balloon.style.left = `${point.x}%`;
             balloon.style.top = `${point.y}%`;
+            activeBalloons.add(balloon);
+            balloon.addEventListener("click", () => {
+                poppedBalloons++;                      
+                balloon.remove(); 
+                activeBalloons.delete(balloon);
+                if (poppedBalloons === 9) {
+                    activeBalloons.forEach(balloon => {
+                        balloon.classList.add("balloon-fade-out");
+                    });
+                    setTimeout(() => {
+                        onComplete();
+                    }, 750);
+                }           
+            });
             mask.append(balloon);
-        }, 2500 + index * 1000);
+        }, 1250 + index * 125);
     });
 }
 
@@ -380,7 +412,7 @@ function showBalloonsScene(scene) {
     setBackground("bg-balloons");
     
     const title = createElement("h1", "Pop the balloons!");
-    title.classList.add("scene-title");
+    title.classList.add("scene-title", "is-hidden-with-fade");
     
     const frameMaskBalloonsContainer = createElement("div");
     frameMaskBalloonsContainer.classList.add("frame-and-mask-and-balloons-container");
@@ -389,18 +421,404 @@ function showBalloonsScene(scene) {
     balloonMask.classList.add("balloon-mask");
     
     const frameBack = createElement("div");
-    frameBack.classList.add("frame-back");
+    frameBack.classList.add("frame-back", "bg-cake");
     
     const frameFront = createElement("img");
     frameFront.src = "assets/images/frame1c.png";
     frameFront.classList.add("frame-front");
     
-    frameMaskBalloonsContainer.append(frameBack, frameFront, balloonMask);
+    const birthdayStatus = getBirthdayStatus();
 
-    const balloonGrid = createBalloonGrid(balloonMask);
+    if (birthdayStatus === "birthday") {
+        // la torta
+        const cake = createElement("img");
+        cake.src = "assets/images/cake.png";
+        cake.classList.add("cake-balloon-scene", "is-hidden-with-fade");
+        
+        frameMaskBalloonsContainer.append(frameBack, frameFront, balloonMask, cake);
+        
+        const balloonGrid = createBalloonGrid(balloonMask);
+        
+        setTimeout(() => {
+            title.classList.remove("is-hidden-with-fade");
+            cake.classList.remove("is-hidden-with-fade");
+        }, 1250 + (balloonGrid.length - 1) * 125 + 250);
+        
+        createBalloons(balloonMask, balloonGrid, () => {
+            title.textContent = "Good job!";
+            setTimeout(() => {
+                title.classList.add("is-hidden-with-fade");
+                frameFront.classList.add("is-hidden-with-fade");
+                cake.classList.add("cake-zoom");
+                frameBack.classList.add("cake-bg-zoom");
 
+                setTimeout(() => {
+                    changeScene(showCakeScene);
+                }, 1250);
+            }, 1250);
+        });    
+    } else {
+        // lo snowglobe
+        const snowglobe = createElement("img");
+        snowglobe.src = "assets/images/snowglobe.png";
+        snowglobe.classList.add("snowglobe-balloon-scene", "is-hidden-with-fade");
+        
+        frameMaskBalloonsContainer.append(frameBack, frameFront, balloonMask, snowglobe);
+        
+        const balloonGrid = createBalloonGrid(balloonMask);
+        
+        setTimeout(() => {
+            title.classList.remove("is-hidden-with-fade");
+            snowglobe.classList.remove("is-hidden-with-fade");
+        }, 1250 + (balloonGrid.length - 1) * 125 + 250);
+        
+        createBalloons(balloonMask, balloonGrid, () => {
+            title.textContent = "Good job!";
+            setTimeout(() => {
+                title.classList.add("is-hidden-with-fade");
+                frameFront.classList.add("is-hidden-with-fade");
+                snowglobe.classList.add("snowglobe-zoom");
+                frameBack.classList.add("snowglobe-bg-zoom");
+    
+                setTimeout(() => {
+                    changeScene(showSnowglobeScene);
+                }, 1250);
+            }, 1250);
+        });
+    
+    }
+    
     scene.append(frameMaskBalloonsContainer, title);
 }
+
+// SCENA CAKE: SE GIORNO == BDAY, TORTA CON LE CANDELINE, ALTRIMENTI SUCCESSIVAMENTE DIRETTAMENTE LO SNOWGLOBE
+// funzione di supporto per la creazione delle candeline
+function createCandle(position) {
+    const candleContainer = createElement("div");
+    candleContainer.classList.add("single-candle-container");
+    
+    candleContainer.style.left = `${position}%`;
+    
+    const candle = createElement("img");
+    candle.src = "assets/images/candle.png";
+    candle.classList.add("candle");
+    
+    const flame = createElement("img");
+    flame.src = "assets/images/flame.png";
+    flame.classList.add("flame");
+    
+    candleContainer.append(candle, flame);
+    
+    return {
+        element: candleContainer,
+        flame: flame
+    };
+}
+
+// funzione di supporto per l'accensione delle candeline
+function relightRandomCandle(candles) {
+    const unlitCandles = candles.filter(
+        candle => candle.flame.style.display === "none"
+    );
+    const randomIndex = Math.floor(Math.random() * unlitCandles.length);
+    const candle = unlitCandles[randomIndex];
+    candle.flame.style.display = "block";
+}
+
+function showCakeScene(scene) {
+    scene.classList.add("scene-cake");
+    setBackground("bg-empty");
+    
+    const title = createElement("h1", "Blow ALLLLLL the candles out!");
+    title.classList.add("scene-title", "is-hidden-with-fade");
+    
+    const message = createElement("p", "Touch them to blow them out 😉👉🏼💨");
+    message.classList.add("scene-message", "is-hidden-with-fade");
+    
+    const fakeBg = createElement("div");
+    fakeBg.classList.add("fake-cake-bg", "bg-cake");
+    
+    const cakeAndCandlesContainer = createElement("div");
+    cakeAndCandlesContainer.classList.add("cake-and-candles-container");
+    
+    // la torta
+    const cake = createElement("img");
+    cake.src = "assets/images/cake.png";
+    cake.classList.add("cake-cake-scene");
+    
+    cakeAndCandlesContainer.append(cake);
+    
+    const candles = [];
+    const candlePositions = [30, 38, 46, 54, 62, 70];
+    
+    candlePositions.forEach(position => {
+        const candle = createCandle(position);
+        candles.push(candle);
+        cakeAndCandlesContainer.append(candle.element);
+    });
+    
+    const explodingCakeContainer = createElement("div");
+    explodingCakeContainer.classList.add("exploding-cake-container", "is-hidden-with-fade");
+    
+    const snow1 = createElement("img");
+    snow1.src = "assets/images/snow1.png";
+    snow1.classList.add("snow1-cake-scene");
+    
+    const snow2 = createElement("img");
+    snow2.src = "assets/images/snow2.png";
+    snow2.classList.add("snow2-cake-scene");
+    
+    const snow3 = createElement("img");
+    snow3.src = "assets/images/snow3.png";
+    snow3.classList.add("snow3-cake-scene");
+    
+    const snow4 = createElement("img");
+    snow4.src = "assets/images/snow4.png";
+    snow4.classList.add("snow4-cake-scene");
+    
+    const snow5 = createElement("img");
+    snow5.src = "assets/images/snow5.png";
+    snow5.classList.add("snow5-cake-scene");
+    
+    const snow6 = createElement("img");
+    snow6.src = "assets/images/snow6.png";
+    snow6.classList.add("snow6-cake-scene");
+    
+    explodingCakeContainer.append(snow1, snow2, snow3, snow4, snow5, snow6);
+    
+    const snowglobeContainer = createElement("div");
+    snowglobeContainer.classList.add("snowglobe-cake-scene-container", "is-hidden-with-fade");
+    
+    const snowglobe = createElement("img");
+    snowglobe.src = "assets/images/snowglobe.png";
+    snowglobe.classList.add("snowglobe-cake-scene");
+    
+    const snowglobeGlass = createElement("img");
+    snowglobeGlass.src = "assets/images/snowglobe-glass.png";
+    snowglobeGlass.classList.add("snowglobe-cake-scene-glass");
+    
+    const snowglobeBase = createElement("img");
+    snowglobeBase.src = "assets/images/snowglobe-base.png";
+    snowglobeBase.classList.add("snowglobe-cake-scene-base");
+    
+    snowglobeContainer.append(snowglobe, snowglobeGlass, snowglobeBase);
+    
+    let candlesLeft = 6;
+    let prankCount = 0;
+    const maxPranks = 3;
+    
+    candles.forEach(candle => {
+        candle.element.addEventListener("click", () => {
+            if (candle.flame.style.display === "none") {
+                return;
+            }
+            candle.flame.style.display = "none";
+            candlesLeft--;
+            if (candlesLeft === 0) {
+                prankCount++;
+                if (prankCount <= maxPranks) {
+                    setTimeout(() => {
+                        relightRandomCandle(candles);
+                        candlesLeft = 1;
+                    }, 750);
+                } else {
+                    setTimeout(() => {
+                        title.classList.add("is-hidden-with-fade");
+                        message.classList.add("is-hidden-with-fade");
+                        cakeAndCandlesContainer.classList.add("cake-wobble");
+                    }, 1250);
+                    cakeAndCandlesContainer.addEventListener("animationend", () => {
+                        // qui parte la neve
+                        explodingCakeContainer.classList.remove("is-hidden-with-fade");
+                        explodingCakeContainer.classList.add("exploding-cake-zoom");
+                        
+                        setTimeout(() => {
+                            cakeAndCandlesContainer.classList.add("is-hidden");
+                            snowglobeContainer.classList.remove("is-hidden-with-fade");
+                            setTimeout(() => {
+                                explodingCakeContainer.classList.add("snow-disappear-one-by-one");
+                                cakeAndCandlesContainer.addEventListener("animationend", () => {
+                                    changeScene(showSnowglobeScene);
+                                }, { once: true });
+                            }, 1250);
+                        }, 875);
+                    }, { once: true });
+                }
+            }
+        });
+    });
+
+    cakeAndCandlesContainer.append(title, message);
+    
+    title.classList.remove("is-hidden-with-fade");
+    message.classList.remove("is-hidden-with-fade");
+
+    scene.append(cakeAndCandlesContainer, fakeBg, snowglobeContainer, explodingCakeContainer);
+}
+
+// SCENA SNOWGLOBE CON LETTERA
+// funzione di supporto per la neve della palla di neve
+function createSnowflakes(mask) {
+    const maskHeight = mask.offsetHeight;
+    for (let i = 0; i < 169; i++) {
+        const snowflake = document.createElement("img");
+        snowflake.classList.add("snowflake");
+        snowflake.src = snowflakeImages[Math.floor(Math.random() * snowflakeImages.length)];
+
+        if ((Math.random() > 0.4) && (Math.random() < 0.6)) {
+            snowflake.classList.add("snowflake-white");
+        }
+        else if ((Math.random() > 0.6) && (Math.random() < 1)) {
+            snowflake.classList.add("snowflake-white");
+        }
+
+        const size = 2 + Math.random() * 4;
+        snowflake.style.width = `${size}vw`;
+
+        //posizionamento nella maschera
+        const angle = Math.random() * Math.PI * 2;
+        const radius = Math.sqrt(Math.random()) * 45;
+        const x = 50 + Math.cos(angle) * radius;
+        snowflake.style.left = `${x}%`;
+        // const y = 50 + Math.sin(angle) * radius;
+        // posizione iniziale sotto la maschera
+        const y = 100 + Math.random() * 20;
+        snowflake.style.top = `${y}%`;
+        // altezza di salita individuale con riferimento all'altezza della maschera
+        const rise = maskHeight * (0.45 + Math.random() * 0.6);
+        // rotazione individuale
+        const rotation = (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 360);
+        // durata individuale
+        const duration = 1.8 + Math.random() * 0.6;
+        snowflake.style.setProperty("--rise", `${rise}px`);
+        snowflake.style.setProperty("--rotation", `${rotation}deg`);
+        snowflake.style.setProperty("--duration", `${duration}s`);
+
+        mask.append(snowflake);
+    }
+}
+
+// funzione di supporto per animare la neve della palla di neve
+function shakeSnow(mask) {
+    const snowflakes = mask.querySelectorAll(".snowflake");
+    snowflakes.forEach(snowflake => {
+        snowflake.classList.remove("is-shaking");
+        void snowflake.offsetWidth;
+        snowflake.classList.add("is-shaking");
+    });
+}
+
+// funzione di supporto per animare la palla di neve
+function wobbleSnowglobe(container) {
+    container.classList.remove("snowglobe-wobble");
+    void container.offsetWidth;
+    container.classList.add("snowglobe-wobble");
+}
+
+function showSnowglobeScene(scene) {
+    scene.classList.add("scene-snowglobe");
+    setBackground("bg-empty");
+    
+    let snowglobeClicks = 0;
+
+    const fakeBg = createElement("div");
+    fakeBg.classList.add("fake-snowglobe-bg", "bg-snowglobe");
+    
+    const snowglobeContainer = createElement("div");
+    snowglobeContainer.classList.add("snowglobe-snowglobe-scene-container");
+    
+    const snowglobe = createElement("img");
+    snowglobe.src = "assets/images/snowglobe.png";
+    snowglobe.classList.add("snowglobe-snowglobe-scene");
+    
+    const snowglobeGlass = createElement("img");
+    snowglobeGlass.src = "assets/images/snowglobe-glass.png";
+    snowglobeGlass.classList.add("snowglobe-snowglobe-scene-glass");
+    
+    const snowglobeNoGlass = createElement("img");
+    snowglobeNoGlass.src = "assets/images/snowglobe-no-glass.png";
+    snowglobeNoGlass.classList.add("snowglobe-snowglobe-scene-no-glass");
+    
+    const snowglobeGlassCracked1 = createElement("img");
+    snowglobeGlassCracked1.src = "assets/images/snowglobe-glass-cracked1.png";
+    snowglobeGlassCracked1.classList.add("snowglobe-snowglobe-scene-glass-cracked1");
+    
+    const snowglobeGlassCracked2 = createElement("img");
+    snowglobeGlassCracked2.src = "assets/images/snowglobe-glass-cracked2.png";
+    snowglobeGlassCracked2.classList.add("snowglobe-snowglobe-scene-glass-cracked2");
+    
+    const snowglobeGlassBrokenFull = createElement("img");
+    snowglobeGlassBrokenFull.src = "assets/images/snowglobe-glass-broken-full.png";
+    snowglobeGlassBrokenFull.classList.add("snowglobe-snowglobe-scene-glass-broken-full");
+    
+    const snowglobeGlassBrokenLeft = createElement("img");
+    snowglobeGlassBrokenLeft.src = "assets/images/snowglobe-glass-broken-left.png";
+    snowglobeGlassBrokenLeft.classList.add("snowglobe-snowglobe-scene-glass-broken-left");
+
+    const snowglobeGlassBrokenRight = createElement("img");
+    snowglobeGlassBrokenRight.src = "assets/images/snowglobe-glass-broken-right.png";
+    snowglobeGlassBrokenRight.classList.add("snowglobe-snowglobe-scene-glass-broken-right");
+    
+    const snowglobeBase = createElement("img");
+    snowglobeBase.src = "assets/images/snowglobe-base.png";
+    snowglobeBase.classList.add("snowglobe-snowglobe-scene-base");
+    
+    snowglobeContainer.append(snowglobe, snowglobeBase, snowglobeGlass, snowglobeNoGlass, snowglobeGlassCracked1, snowglobeGlassCracked2, snowglobeGlassBrokenFull, snowglobeGlassBrokenLeft, snowglobeGlassBrokenRight);
+    
+    const snowglobeMask = createElement("div");
+    snowglobeMask.classList.add("snowglobe-mask");
+    
+    snowglobeContainer.append(snowglobeMask);
+
+    scene.append(fakeBg, snowglobeContainer);
+    
+    createSnowflakes(snowglobeMask);
+
+    fakeBg.classList.add("bg-snowglobe-dark");
+    
+    snowglobeGlassCracked1.classList.add("is-hidden");
+    snowglobeGlassCracked2.classList.add("is-hidden");
+    snowglobeGlassBrokenFull.classList.add("is-hidden");
+    snowglobeGlassBrokenLeft.classList.add("is-hidden");
+    snowglobeGlassBrokenRight.classList.add("is-hidden");
+
+    snowglobeContainer.addEventListener("click", () => {
+        snowglobeClicks++;
+        
+        if (snowglobeClicks < 7) {
+            shakeSnow(snowglobeMask);
+            wobbleSnowglobe(snowglobeContainer);
+        }
+
+        if (snowglobeClicks === 3) {
+            snowglobeGlass.classList.add("is-hidden");
+            snowglobeGlassCracked1.classList.remove("is-hidden");
+        }
+
+        if (snowglobeClicks === 4) {
+            snowglobeGlassCracked1.classList.add("is-hidden");
+            snowglobeGlassCracked2.classList.remove("is-hidden");
+        }
+
+        if (snowglobeClicks === 5) {
+            snowglobeGlassCracked2.classList.add("is-hidden");
+            snowglobeGlassBrokenFull.classList.remove("is-hidden");
+        }
+
+        if (snowglobeClicks === 6) {
+            snowglobeGlassBrokenFull.classList.add("is-hidden");
+            snowglobeGlassBrokenLeft.classList.remove("is-hidden");
+            snowglobeGlassBrokenRight.classList.remove("is-hidden");
+        }
+    });
+
+
+
+
+
+
+}
+
 
 
 
@@ -415,7 +833,7 @@ function setBackground(background) {
         "bg-on-time",
         "bg-balloons",
         "bg-cake",
-        "bg-envelope"
+        "bg-empty"
     );
     removeBokeh();
     document.body.classList.add(background);
