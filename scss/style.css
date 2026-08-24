@@ -142,9 +142,12 @@ p {
   height: auto;
   left: 50%;
   transform: translateX(-50%);
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
   color: #d8eafa;
 }
 .scene-go-on .snow-frame-container .snow-frame-top {
@@ -448,6 +451,7 @@ p {
 }
 .scene-on-time .bunny-and-button-container .primary-button {
   position: absolute;
+  width: -moz-max-content;
   width: max-content;
   margin: 0;
   left: 50%;
@@ -1518,6 +1522,4 @@ p {
   to {
     transform: translateY(-12px);
   }
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

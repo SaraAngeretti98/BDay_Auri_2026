@@ -22,8 +22,8 @@ function showIntroScene(scene) {
 // SCENA "TOO EARLY O BIRTHDAY?": TASTO GO ON E FIOCCHI DI NEVE
 // funzione di supporto per la verifica della data
 function getBirthdayStatus() {
-    // const now = new Date();
-    const now = testBirthdayDate;
+    const now = new Date();
+    // const now = testBirthdayDate;
     
     const californiaDate = new Intl.DateTimeFormat("en-US", {
         timeZone: birthdayTimezone,
@@ -148,15 +148,15 @@ function showGoOnScene(scene) {
     button.classList.add("primary-button");
     
     button.addEventListener("click", () => {
-        // const birthdayStatus = getBirthdayStatus();
-        // if (birthdayStatus === "birthday" || birthdayStatus === "after") {
-        //     changeScene(showOnTimeScene);
-        // } else {
-        //     changeScene(showTooEarlyScene);
-        // }
+        const birthdayStatus = getBirthdayStatus();
+        if (birthdayStatus === "birthday" || birthdayStatus === "after") {
+            changeScene(showOnTimeScene);
+        } else {
+            changeScene(showTooEarlyScene);
+        }
         
-        // testing
-        changeScene(showSnowglobeScene);
+        // // testing
+        // changeScene(showCakeScene);
     });
     
     const snowFrameContainer = createElement("div");
@@ -459,17 +459,30 @@ function showBalloonsScene(scene) {
         });    
     } else {
         // lo snowglobe
-        const snowglobe = createElement("img");
-        snowglobe.src = "assets/images/snowglobe.png";
-        snowglobe.classList.add("snowglobe-balloon-scene", "is-hidden-with-fade");
+        const snowglobeContainer = createElement("div");
+        snowglobeContainer.classList.add("snowglobe-snowglobe-scene-container", "is-hidden-with-fade");
         
-        frameMaskBalloonsContainer.append(frameBack, frameFront, balloonMask, snowglobe);
+        const snowglobeGlass = createElement("img");
+        snowglobeGlass.src = "assets/images/snowglobe-glass.png";
+        snowglobeGlass.classList.add("snowglobe-snowglobe-scene-glass");
+        
+        const snowglobeNoGlass = createElement("img");
+        snowglobeNoGlass.src = "assets/images/snowglobe-no-glass.png";
+        snowglobeNoGlass.classList.add("snowglobe-snowglobe-scene-no-glass");
+        
+        const snowglobeBase = createElement("img");
+        snowglobeBase.src = "assets/images/snowglobe-base.png";
+        snowglobeBase.classList.add("snowglobe-snowglobe-scene-base");
+        
+        snowglobeContainer.append(snowglobeBase, snowglobeGlass, snowglobeNoGlass);
+        
+        frameMaskBalloonsContainer.append(frameBack, frameFront, balloonMask, snowglobeContainer);
         
         const balloonGrid = createBalloonGrid(balloonMask);
         
         setTimeout(() => {
             title.classList.remove("is-hidden-with-fade");
-            snowglobe.classList.remove("is-hidden-with-fade");
+            snowglobeContainer.classList.remove("is-hidden-with-fade");
         }, 1250 + (balloonGrid.length - 1) * 125 + 250);
         
         createBalloons(balloonMask, balloonGrid, () => {
@@ -477,7 +490,7 @@ function showBalloonsScene(scene) {
             setTimeout(() => {
                 title.classList.add("is-hidden-with-fade");
                 frameFront.classList.add("is-hidden-with-fade");
-                snowglobe.classList.add("snowglobe-zoom");
+                snowglobeContainer.classList.add("snowglobe-zoom");
                 frameBack.classList.add("snowglobe-bg-zoom");
     
                 setTimeout(() => {
@@ -586,26 +599,50 @@ function showCakeScene(scene) {
     
     explodingCakeContainer.append(snow1, snow2, snow3, snow4, snow5, snow6);
     
+    // SNOWGLOBE
     const snowglobeContainer = createElement("div");
-    snowglobeContainer.classList.add("snowglobe-cake-scene-container", "is-hidden-with-fade");
+    snowglobeContainer.classList.add("snowglobe-snowglobe-scene-container", "is-hidden-with-fade");
     
     const snowglobe = createElement("img");
     snowglobe.src = "assets/images/snowglobe.png";
-    snowglobe.classList.add("snowglobe-cake-scene");
+    snowglobe.classList.add("snowglobe-snowglobe-scene");
     
     const snowglobeGlass = createElement("img");
     snowglobeGlass.src = "assets/images/snowglobe-glass.png";
-    snowglobeGlass.classList.add("snowglobe-cake-scene-glass");
+    snowglobeGlass.classList.add("snowglobe-snowglobe-scene-glass");
+    
+    const snowglobeNoGlass = createElement("img");
+    snowglobeNoGlass.src = "assets/images/snowglobe-no-glass.png";
+    snowglobeNoGlass.classList.add("snowglobe-snowglobe-scene-no-glass");
     
     const snowglobeBase = createElement("img");
     snowglobeBase.src = "assets/images/snowglobe-base.png";
-    snowglobeBase.classList.add("snowglobe-cake-scene-base");
+    snowglobeBase.classList.add("snowglobe-snowglobe-scene-base");
     
-    snowglobeContainer.append(snowglobe, snowglobeGlass, snowglobeBase);
+    snowglobeContainer.append(snowglobe, snowglobeBase, snowglobeGlass, snowglobeNoGlass);
+    
+    // BUSTA
+    const envelopeContainer = document.createElement("div");
+    envelopeContainer.classList.add("envelope-container");
+    
+    const envelopeFrontBottom = document.createElement("img");
+    envelopeFrontBottom.src = "assets/images/envelope-front-bottom.png"
+    envelopeFrontBottom.classList.add("envelope-front-bottom");
+    
+    const envelopeFrontTopClose = document.createElement("img");
+    envelopeFrontTopClose.src = "assets/images/envelope-front-top-close.png"
+    envelopeFrontTopClose.classList.add("envelope-front-top-close");
+    
+    const envelopeFrontTopOpen = document.createElement("img");
+    envelopeFrontTopOpen.src = "assets/images/envelope-front-top-open.png"
+    envelopeFrontTopOpen.classList.add("envelope-front-top-open");
+    
+    envelopeContainer.append(envelopeFrontBottom, envelopeFrontTopClose, envelopeFrontTopOpen);
+    snowglobeContainer.append(envelopeContainer);    
     
     let candlesLeft = 6;
     let prankCount = 0;
-    const maxPranks = 3;
+    const maxPranks = 6;
     
     candles.forEach(candle => {
         candle.element.addEventListener("click", () => {
@@ -636,10 +673,10 @@ function showCakeScene(scene) {
                             cakeAndCandlesContainer.classList.add("is-hidden");
                             snowglobeContainer.classList.remove("is-hidden-with-fade");
                             setTimeout(() => {
-                                explodingCakeContainer.classList.add("snow-disappear-one-by-one");
-                                cakeAndCandlesContainer.addEventListener("animationend", () => {
+                                snow6.addEventListener("animationend", (event) => {
                                     changeScene(showSnowglobeScene);
                                 }, { once: true });
+                                explodingCakeContainer.classList.add("snow-disappear-one-by-one");
                             }, 1250);
                         }, 875);
                     }, { once: true });
@@ -685,9 +722,9 @@ function createSnowflakes(mask) {
         const y = 100 + Math.random() * 20;
         snowflake.style.top = `${y}%`;
         // altezza di salita individuale con riferimento all'altezza della maschera
-        const rise = maskHeight * (0.45 + Math.random() * 0.6);
+        const rise = maskHeight * (0.4 + Math.random() * 0.5);
         // rotazione individuale
-        const rotation = (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 360);
+        const rotation = (Math.random() > 0.5 ? 1 : -1) * (720 + Math.random() * 360);
         // durata individuale
         const duration = 1.8 + Math.random() * 0.6;
         snowflake.style.setProperty("--rise", `${rise}px`);
@@ -721,6 +758,12 @@ function showSnowglobeScene(scene) {
     
     let snowglobeClicks = 0;
 
+    const title = createElement("h1", "Tap the snowglobe to shake it!");
+    title.classList.add("scene-title", "is-hidden");
+    
+    const message = createElement("p", "Tap away!");
+    message.classList.add("scene-message", "is-hidden");
+    
     const fakeBg = createElement("div");
     fakeBg.classList.add("fake-snowglobe-bg", "bg-snowglobe");
     
@@ -741,23 +784,23 @@ function showSnowglobeScene(scene) {
     
     const snowglobeGlassCracked1 = createElement("img");
     snowglobeGlassCracked1.src = "assets/images/snowglobe-glass-cracked1.png";
-    snowglobeGlassCracked1.classList.add("snowglobe-snowglobe-scene-glass-cracked1");
+    snowglobeGlassCracked1.classList.add("snowglobe-snowglobe-scene-glass-cracked1", "is-hidden");
     
     const snowglobeGlassCracked2 = createElement("img");
     snowglobeGlassCracked2.src = "assets/images/snowglobe-glass-cracked2.png";
-    snowglobeGlassCracked2.classList.add("snowglobe-snowglobe-scene-glass-cracked2");
+    snowglobeGlassCracked2.classList.add("snowglobe-snowglobe-scene-glass-cracked2", "is-hidden");
     
     const snowglobeGlassBrokenFull = createElement("img");
     snowglobeGlassBrokenFull.src = "assets/images/snowglobe-glass-broken-full.png";
-    snowglobeGlassBrokenFull.classList.add("snowglobe-snowglobe-scene-glass-broken-full");
+    snowglobeGlassBrokenFull.classList.add("snowglobe-snowglobe-scene-glass-broken-full", "is-hidden");
     
     const snowglobeGlassBrokenLeft = createElement("img");
     snowglobeGlassBrokenLeft.src = "assets/images/snowglobe-glass-broken-left.png";
-    snowglobeGlassBrokenLeft.classList.add("snowglobe-snowglobe-scene-glass-broken-left");
+    snowglobeGlassBrokenLeft.classList.add("snowglobe-snowglobe-scene-glass-broken-left", "is-hidden");
 
     const snowglobeGlassBrokenRight = createElement("img");
     snowglobeGlassBrokenRight.src = "assets/images/snowglobe-glass-broken-right.png";
-    snowglobeGlassBrokenRight.classList.add("snowglobe-snowglobe-scene-glass-broken-right");
+    snowglobeGlassBrokenRight.classList.add("snowglobe-snowglobe-scene-glass-broken-right", "is-hidden");
     
     const snowglobeBase = createElement("img");
     snowglobeBase.src = "assets/images/snowglobe-base.png";
@@ -768,28 +811,57 @@ function showSnowglobeScene(scene) {
     const snowglobeMask = createElement("div");
     snowglobeMask.classList.add("snowglobe-mask");
     
-    snowglobeContainer.append(snowglobeMask);
-
-    scene.append(fakeBg, snowglobeContainer);
+    const envelopeContainer = document.createElement("div");
+    envelopeContainer.classList.add("envelope-container");
+    
+    // BUSTA
+    const envelopeBack = document.createElement("div");
+    envelopeBack.classList.add("envelope-back");
+    
+    const envelopeFrontBottom = document.createElement("img");
+    envelopeFrontBottom.src = "assets/images/envelope-front-bottom.png"
+    envelopeFrontBottom.classList.add("envelope-front-bottom");
+    
+    const envelopeFrontTopClose = document.createElement("img");
+    envelopeFrontTopClose.src = "assets/images/envelope-front-top-close.png"
+    envelopeFrontTopClose.classList.add("envelope-front-top-close");
+    
+    const envelopeFrontTopOpen = document.createElement("img");
+    envelopeFrontTopOpen.src = "assets/images/envelope-front-top-open.png"
+    envelopeFrontTopOpen.classList.add("envelope-front-top-open");
+    
+    const envelopeLetterBottomClose = document.createElement("img");
+    envelopeLetterBottomClose.src = "assets/images/envelope-letter-bottom-open.png"
+    envelopeLetterBottomClose.classList.add("envelope-letter-bottom-close");
+    
+    const envelopeLetterBottomOpen = document.createElement("img");
+    envelopeLetterBottomOpen.src = "assets/images/envelope-letter-bottom-open.png"
+    envelopeLetterBottomOpen.classList.add("envelope-letter-bottom-open");
+    
+    const envelopeLetterTopOpen = document.createElement("img");
+    envelopeLetterTopOpen.src = "assets/images/envelope-letter-top-open.png"
+    envelopeLetterTopOpen.classList.add("envelope-letter-top-open");
+    
+    envelopeContainer.append(envelopeFrontBottom, envelopeFrontTopClose, envelopeFrontTopOpen, envelopeLetterBottomOpen, envelopeLetterBottomClose, envelopeLetterTopOpen, envelopeBack);
+    
+    snowglobeContainer.append(snowglobeMask, envelopeContainer);
+    
+    scene.append(title, message, fakeBg, snowglobeContainer);
     
     createSnowflakes(snowglobeMask);
-
-    fakeBg.classList.add("bg-snowglobe-dark");
     
-    snowglobeGlassCracked1.classList.add("is-hidden");
-    snowglobeGlassCracked2.classList.add("is-hidden");
-    snowglobeGlassBrokenFull.classList.add("is-hidden");
-    snowglobeGlassBrokenLeft.classList.add("is-hidden");
-    snowglobeGlassBrokenRight.classList.add("is-hidden");
-
+    fakeBg.classList.add("bg-snowglobe-dark");
+    title.classList.remove("is-hidden");
+    message.classList.remove("is-hidden");
+    
     snowglobeContainer.addEventListener("click", () => {
         snowglobeClicks++;
         
-        if (snowglobeClicks < 7) {
+        if (snowglobeClicks < 6) {
             shakeSnow(snowglobeMask);
             wobbleSnowglobe(snowglobeContainer);
         }
-
+        
         if (snowglobeClicks === 3) {
             snowglobeGlass.classList.add("is-hidden");
             snowglobeGlassCracked1.classList.remove("is-hidden");
@@ -801,24 +873,222 @@ function showSnowglobeScene(scene) {
         }
 
         if (snowglobeClicks === 5) {
+            title.classList.add("is-hidden-with-fade");
+            message.classList.add("is-hidden-with-fade");
             snowglobeGlassCracked2.classList.add("is-hidden");
             snowglobeGlassBrokenFull.classList.remove("is-hidden");
         }
 
         if (snowglobeClicks === 6) {
-            snowglobeGlassBrokenFull.classList.add("is-hidden");
-            snowglobeGlassBrokenLeft.classList.remove("is-hidden");
-            snowglobeGlassBrokenRight.classList.remove("is-hidden");
+            setTimeout(() => {
+                snowglobeGlassBrokenFull.classList.add("is-hidden");
+                snowglobeGlassBrokenLeft.classList.remove("is-hidden");
+                snowglobeGlassBrokenRight.classList.remove("is-hidden");
+            }, 875);
+            wobbleSnowglobe(snowglobeContainer);
+        }
+
+        if (snowglobeClicks === 7) {
+            snowglobeGlassBrokenLeft.classList.add("snowglobe-glass-fade-out");
+            snowglobeGlassBrokenRight.classList.add("snowglobe-glass-fade-out");
+            
+            setTimeout(() => {
+                snowglobeNoGlass.classList.add("snowglobe-glass-fade-out");
+                snowglobeBase.classList.add("snowglobe-glass-fade-out");
+                setTimeout(() => {
+                    changeScene(showEnvelopeScene);
+                }, 875);
+            }, 1875);
         }
     });
-
-
-
-
-
-
 }
 
+// SCENA ENVELOPE CON LETTERA
+function showEnvelopeScene(scene) {
+    scene.classList.add("scene-letter");
+    setBackground("bg-letter");
+
+    const title = createElement("h1", "Scroll from the top to read more! 🤍");
+    title.classList.add("scene-title", "is-hidden-with-fade");
+
+    // BUSTA
+    const envelopeContainer = document.createElement("div");
+    envelopeContainer.classList.add("envelope-container");
+    
+    const envelopeBack = document.createElement("div");
+    envelopeBack.classList.add("envelope-back");
+    
+    const envelopeFrontBottom = document.createElement("img");
+    envelopeFrontBottom.src = "assets/images/envelope-front-bottom.png"
+    envelopeFrontBottom.classList.add("envelope-front-bottom");
+    
+    const envelopeFrontTopClose = document.createElement("img");
+    envelopeFrontTopClose.src = "assets/images/envelope-front-top-close.png"
+    envelopeFrontTopClose.classList.add("envelope-front-top-close");
+    
+    const envelopeFrontTopOpen = document.createElement("img");
+    envelopeFrontTopOpen.src = "assets/images/envelope-front-top-open.png"
+    envelopeFrontTopOpen.classList.add("envelope-front-top-open");
+    
+    const letterContainer = document.createElement("div");
+    letterContainer.classList.add("letter-container");
+
+    // container per la parte scrollabile di testo
+    const letterWindow = document.createElement("div");
+    letterWindow.classList.add("letter-window");
+    
+    // parte scrollabile di testo
+    const letterText = document.createElement("div");
+    letterText.classList.add("letter-text");
+
+    letterText.innerHTML = `
+        <p class="date">Sept. 6, 2026</p>
+        <p>Dear Auri,</p>
+        <p>If you've made it this far, congratulations! And thank you for the patience. I clearly had way too much time on my hands. I know this whole thing maybe was a little ridiculous. There are probably thousands of easier ways to say "happy birthday". But somehow "happy birthday" didn't feel like enough. Not with you. You always spur me to do a little better, to learn something new, to try and surprise you in a way I never did before. So I thought, why not try with a whole mf website? And here we are.</p>
+        <p>I tried sitting down, thinking what could I tell you with this letter. Because the truth is, when I try to explain what you mean to me, I always end up reaching for the same words. And somehow they never quite seem to fit. They're not enough. Not that that's a reason to stop trying.</p>
+        <p>Like, one of the strangest things about loving someone as a friend? You never really get used to the fact that there is never quite enough time. Somehow, no matter how much time we spend together, I always leave feeling like we could have stayed another three hours. There is always one more thing to tell you, one more story, one more stupid thought, one more thing I want to show you. And I think that's part of what I love so much about having you in my life: somehow, there is always more. More things to share, more things to discover, more little pieces of you that I get to know. Maybe that's why, even after all this time, you still manage to keep me on my toes. Every year, I get to meet another little version of you. And somehow, every single one gives me another reason to love you.</p>
+        <p>And I think that's also why you somehow manage to be part of so many little pieces of my everyday life. There are so many completely insignificant moments when my first thought is still "I have to tell Auri this." A song. A picture. Something stupid that happened. Something I know you'd find funny. Something beautiful I know you'd appreciate. I wonder if you know how often you are there, even when you're not. And then there are the moments when you actually are there, and somehow you don't even have to do anything. We can be in the gym, both trying to focus, and all it takes is one weird look from you, one of those ridiculously expressive eyebrow things you do, and suddenly I'm trying not to laugh in the middle of an exercise. Sometimes it's just pronouncing a word wrong. Or saying one word instead of another. Or looking at each other at exactly the wrong moment. And somehow that's enough. You have this way of making everything feel lighter without even trying. It doesn't matter what kind of mood I'm in, how tired I am, how shitty my day has been, or how completely off I feel. Somehow, five minutes with you are enough to turn me into an entirely different person. I don't really know how you do that. I think that's your magic.</p>
+        <p>And maybe that's what I mean when I say that "happy birthday" never felt like enough. How do you wish a magical birthday to someone who somehow makes ordinary moments feel magical all the time?</p>
+        <p>I hope this birthday is everything it deserves to be. I hope California gives you beautiful sunsets, warm nights, ridiculous amounts of good food, new places to discover (and hopefully you'll get to sightsee a little more this time), and the kind of memories you'll still be talking about years from now. I hope you get to spend it exactly where you want to be, with the person you want beside you, doing all the things that make you happy. And even though I won't be there to celebrate it with you this time, I hope you know that somewhere on the other side of the world, there will be someone thinking about you and smiling at the thought of you having the time of your life.</p>
+        <p>And I hope this year gives you so many beautiful things that you'll always have one more thing to tell me, too.</p>
+        <p>So, I guess I'll just say it after all, plain and simple.</p>
+        <p>Happy birthday, my sweet Auri. I love you more than I will probably ever manage to put into a letter. Now go have the most magical birthday ever. You deserve it. And when you get back, I expect approximately 69 stories about California.</p>
+        <p>With all my love,</p>
+        <p class="signature">Sara 🤍</p>
+    `;
+    letterWindow.append(letterText);
+
+    const envelopeLetterBottomClose = document.createElement("img");
+    envelopeLetterBottomClose.src = "assets/images/envelope-letter-bottom-open.png"
+    envelopeLetterBottomClose.classList.add("envelope-letter-bottom-close");
+    
+    const envelopeLetterBottomOpen = document.createElement("img");
+    envelopeLetterBottomOpen.src = "assets/images/envelope-letter-bottom-open.png"
+    envelopeLetterBottomOpen.classList.add("envelope-letter-bottom-open");
+    
+    const envelopeLetterTopOpen = document.createElement("img");
+    envelopeLetterTopOpen.src = "assets/images/envelope-letter-top-open.png"
+    envelopeLetterTopOpen.classList.add("envelope-letter-top-open");
+    
+    letterContainer.append(envelopeLetterBottomClose, envelopeLetterBottomOpen, envelopeLetterTopOpen, letterWindow);
+
+    envelopeContainer.append(envelopeFrontBottom, envelopeFrontTopClose, envelopeFrontTopOpen, letterContainer, envelopeBack);
+
+    // SIGILLO
+    const sealContainer = document.createElement("div");
+    sealContainer.classList.add("seal-container");
+
+    const sealTop = document.createElement("img");
+    sealTop.src = "assets/images/seal-top.png";
+    sealTop.classList.add("seal-top");
+    
+    const sealBottom = document.createElement("img");
+    sealBottom.src = "assets/images/seal-bottom.png";
+    sealBottom.classList.add("seal-bottom");
+    
+    const sealLeft = document.createElement("img");
+    sealLeft.src = "assets/images/seal-left.png";
+    sealLeft.classList.add("seal-left");
+    
+    const sealRight = document.createElement("img");
+    sealRight.src = "assets/images/seal-right.png";
+    sealRight.classList.add("seal-right");
+    
+    sealContainer.append(sealTop, sealBottom, sealLeft, sealRight);
+    
+    envelopeContainer.append(sealContainer);
+    
+    let piecesLeft = 4;
+    let sealReady = false;
+
+    scene.append(title, envelopeContainer);
+
+    setTimeout(() => {
+        envelopeContainer.classList.add("envelope-zoom");
+        envelopeContainer.addEventListener("transitionend", () => {
+            sealReady = true;
+        }, { once: true });
+    }, 875);
+
+    // nuova funzione di supporto per l'animazione del sigillo
+    function dropSealPieces() {
+        const sealPieces = [
+            sealTop,
+            sealRight,
+            sealBottom,
+            sealLeft
+        ];
+
+        let index = 0;
+
+        setTimeout(() => {
+            function next() {
+                if (index >= sealPieces.length) return;
+                const piece = sealPieces[index];
+                piece.classList.add("fall");
+                piece.addEventListener("animationend", () => {
+                    index++;
+                    if (index >= sealPieces.length) {
+                        setTimeout(() => {
+                            openEnvelope();
+                        }, 50);
+                        return;
+                    }
+                    next();
+                }, { once: true });
+            }
+            next();
+        }, 375);
+    }
+
+    // nuova funzione di supporto per aprire la busta
+    function openEnvelope() {
+        envelopeFrontTopClose.classList.add("increase-z");
+        setTimeout(() => {
+            envelopeFrontTopOpen.classList.add("decrease-z");
+            setTimeout(() => {
+                letterContainer.classList.add("letter-pulled-out");
+                setTimeout(() => {
+                    envelopeFrontBottom.classList.add("is-hidden-with-fade");
+                    envelopeBack.classList.add("is-hidden-with-fade");
+                    envelopeFrontTopOpen.classList.add("is-hidden-with-fade");
+                    setTimeout(() => {
+                        envelopeLetterBottomClose.classList.add("increase-z");
+                        setTimeout(() => {
+                            envelopeLetterTopOpen.classList.add("decrease-z");
+
+                            setTimeout(() => {
+                                letterText.classList.add("letter-appears");
+                                setTimeout(() => {
+                                    title.classList.remove("is-hidden-with-fade");
+                                }, 875);
+                            }, 875);
+                        }, 625);
+                    }, 875);
+                }, 875);
+            }, 1000);
+        }, 1000);
+    }
+
+    sealContainer.addEventListener("click", () => {
+        if (piecesLeft === 4) {
+            sealTop.classList.add("detach", "detach-top");
+        }
+        else if (piecesLeft === 3) {
+            sealBottom.classList.add("detach", "detach-bottom");
+        }
+        else if (piecesLeft === 2) {
+            sealRight.classList.add("detach", "detach-right");
+        }
+        else if (piecesLeft === 1) {
+            sealLeft.classList.add("detach", "detach-left");
+        }
+        piecesLeft--;
+        if (piecesLeft === 0) {
+            dropSealPieces();
+        }
+    });
+}
 
 
 
