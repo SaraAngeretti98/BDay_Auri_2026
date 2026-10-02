@@ -6,7 +6,7 @@ const birthdayDay = 6;
 const birthdayTimezone = "America/Los_Angeles";
 
 // data fittizia per test
-const testBirthdayDate = new Date(2026, 8, 6, 9, 0, 1);
+const testBirthdayDate = new Date(2026, 8, 5, 9, 0, 1);
 
 // scena "too early"
 const earlyMessages = [
