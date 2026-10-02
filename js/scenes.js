@@ -22,8 +22,8 @@ function showIntroScene(scene) {
 // SCENA "TOO EARLY O BIRTHDAY?": TASTO GO ON E FIOCCHI DI NEVE
 // funzione di supporto per la verifica della data
 function getBirthdayStatus() {
-    // const now = new Date();
-    const now = testBirthdayDate;
+    const now = new Date();
+    // const now = testBirthdayDate;
     
     const californiaDate = new Intl.DateTimeFormat("en-US", {
         timeZone: birthdayTimezone,
